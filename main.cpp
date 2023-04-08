@@ -1,9 +1,12 @@
-﻿#include <SFML/Graphics.hpp>
+#include <SFML/Graphics.hpp>
 #include <iostream>
 #include <algorithm>
 #include <vector>
 #include <chrono>
 #include <thread>
+#include <iomanip>
+#include <sstream>
+#include <cmath>
 
 #define SCREEN_HEIGHT 960
 #define SCREEN_WIDTH 1200
@@ -15,7 +18,6 @@ class obj
 public:
     obj();
 
-    void render(sf::RenderWindow& window);
     sf::Vector2f get_pos() {
         return pos;
     }
@@ -23,80 +25,95 @@ public:
         pos.x = posx;
         pos.y = posy;
     }
+    void render(sf::RenderWindow& window, bool hasLineConnection) {
+        circle.setPosition(pos);
+        circle.setRadius(50);
+        if (hasLineConnection) {
+            circle.setFillColor(sf::Color::Green); // Change the color to green when circle is connected to a line
+        }
+        else {
+            circle.setFillColor(sf::Color::White);
+        }
+        window.draw(circle);
+    }
+
+    void setLineConnection(bool hasLine) {
+        hasLineConnection = hasLine;
+    }
+    bool getLineConnection() {
+        return hasLineConnection;
+    }
     ~obj();
 
 private:
     sf::Vector2f pos;
     sf::CircleShape circle;
+    bool hasLineConnection; // added flag to keep track of line connection
 };
 
 obj::~obj()
 {
-    // No need to delete circle since it's a member variable
+
 }
 
 obj::obj()
 {
-    
+    hasLineConnection = false; // initialize flag to false
 }
 
-void obj::render(sf::RenderWindow& window) {
-    circle.setPosition(pos);
-    circle.setRadius(50);
-    window.draw(circle);
-}
 
 // Function to display the array
-void display(int a[], int n, obj circle[], sf::RenderWindow& window)
+void display(int a[], int n, obj circle[], sf::RenderWindow& window, sf::Text& percentage, float counter)
 {
-    window.clear(sf::Color::White); // Clear window with white color
+    double distnace_between = 0;
+    window.clear(sf::Color::Black); // Clear window with black color
     for (int i = 0; i < n; i++) {
-        circle[i].render(window);
-
         // Draw lines between circles
         if (a[i] != -1) {
             sf::VertexArray line(sf::Lines, 2);
             line[0].position = circle[i].get_pos() + sf::Vector2f(50, 50);
             line[1].position = circle[a[i]].get_pos() + sf::Vector2f(50, 50);
+
+            //calculate distance between using pitagoras
+            distnace_between = distnace_between + sqrt(pow(circle[i].get_pos().x - circle[a[i]].get_pos().x, 2) + pow(circle[i].get_pos().y - circle[a[i]].get_pos().y, 2));
+
             line[0].color = sf::Color::White;
             line[1].color = sf::Color::Blue;
+
+            // Check if circle is connected to a line
+            circle[i].render(window, true);
+            circle[a[i]].render(window, false);
             window.draw(line);
         }
+        if (!distnace_between == 0) cout << distnace_between << endl;
     }
+    cout << endl;
+
+    // Draw counter
+    counter = counter / 720 * 100;
+    std::ostringstream oss;
+    oss << std::fixed << std::setprecision(0) << counter;
+    std::string textStr = oss.str();
+    percentage.setString("Counter: " + textStr + "%");
+    window.draw(percentage);
+
     window.display(); // Display the drawn frame
 }
 
 // Function to find the permutations
-void findPermutations(int a[], int n, obj circle[], sf::RenderWindow& window)
+void findPermutations(int a[], int n, obj circle[], sf::RenderWindow& window, sf::Text& percentage)
 {
+    int counter = 0;
     // Sort the given array
     sort(a, a + n);
 
     // Find all possible permutations
-    cout << "loop restart";
     do {
-        // Display the circles and lines
-        display(a, n, circle, window);
-
-        // Draw lines between circles
-        sf::VertexArray lines(sf::Lines, n * 2);
-        for (int i = 0; i < n; i++) {
-            lines[i * 2].position = circle[i].get_pos() + sf::Vector2f(50, 50);
-            lines[i * 2 + 1].position = circle[a[i]].get_pos() + sf::Vector2f(50, 50);
-            lines[i * 2].color = sf::Color::White;
-            lines[i * 2 + 1].color = sf::Color::Blue;
-        }
-        // Draw circles
-        for (int i = 0; i < n; i++) {
-            circle[i].render(window);
-        }
-        window.clear();
-        for (int i = 0; i < 5; i++) circle[i].render(window);
-        window.draw(lines);
-        window.display();
+        counter++;
+        display(a, n, circle, window, percentage, counter);
 
         // Pause for a short duration
-        this_thread::sleep_for(chrono::milliseconds(50));
+        this_thread::sleep_for(chrono::milliseconds(200));
 
     } while (next_permutation(a, a + n));
 }
@@ -104,14 +121,28 @@ void findPermutations(int a[], int n, obj circle[], sf::RenderWindow& window)
 int main()
 {
     sf::RenderWindow window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), ".");
-    window.setFramerateLimit(500);
+    window.setFramerateLimit(120);
 
-    obj circle[5];
+    sf::Text percentage;
+    sf::Font font;
+    font.loadFromFile("minecraft_font.ttf");
+    percentage.setFont(font); // font is a sf::Font
+
+    // set the character size
+    percentage.setCharacterSize(24); // in pixels, not points!
+
+    // set the color
+    percentage.setFillColor(sf::Color::White);
+    int counter = 0;
+
+    obj circle[6];
+    //object possition 
     circle[0].set_pos(100, 100);
     circle[1].set_pos(1000, 50);
     circle[2].set_pos(500, 900);
     circle[3].set_pos(800, 500);
     circle[4].set_pos(200, 600);
+    circle[5].set_pos(400, 500);
 
     sf::Event event;
 
@@ -130,11 +161,17 @@ int main()
                 break;
             }
         }
-
-        int a[] = { 0, 1, 2, 3, 4 }; // Indices of circles
+        percentage.setString(to_string(counter));
+        counter++;
+        
+        int a[] = { 0, 1, 2, 3, 4, 5}; // Indices of circles
         int n = sizeof(a) / sizeof(a[0]);
-        findPermutations(a, n, circle, window);
+        
+        window.clear();
+        findPermutations(a, n, circle, window, percentage);
+        window.display();
     }
 
     return 0;
 }
+
