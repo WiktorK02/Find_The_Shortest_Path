@@ -5,11 +5,11 @@
 ## Customize it by yourself
 
 ### Change the position and the amount of circles
-  Set the number of the objects by changing index value (n is default):
+  Set the number of the objects by changing index value (```n``` is default):
 ```
 Object circle[n];
 ```
-Set position of the objects based on index value (to n- 1):
+Set position of the objects based on index value (to ```n-1```):
 ```
 circle[0].set_pos(500, 100);
 circle[1].set_pos(800, 50);
@@ -64,4 +64,6 @@ Note: algorithm visualization is based on SFML c++ library
 •	improved SFML library skills<br>
 •	the basics of algorithmics
 
+## License 
+[MIT license](LICENSE)
 
