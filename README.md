@@ -65,5 +65,5 @@ Note: algorithm visualization is based on SFML c++ library
 •	the basics of algorithmics
 
 ## License 
-[MIT license](LICENSE)
+[MIT license](LICENSE.md)
 
