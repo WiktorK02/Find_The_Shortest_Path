@@ -13,10 +13,10 @@
 
 using namespace std;
 
-class obj
+class Object
 {
 public:
-    obj();
+    Object();
 
     sf::Vector2f get_pos() {
         return pos;
@@ -28,7 +28,7 @@ public:
     void render(sf::RenderWindow& window, bool hasLineConnection) {
         circle.setPosition(pos);
         circle.setRadius(50);
-        if (!hasLineConnection) {
+        if (hasLineConnection) {
             circle.setFillColor(sf::Color::Green); // Change the color to green when circle is connected to a line
         }
         else {
@@ -43,7 +43,7 @@ public:
     bool getLineConnection() {
         return hasLineConnection;
     }
-    ~obj();
+    ~Object();
 
 private:
     sf::Vector2f pos;
@@ -51,12 +51,12 @@ private:
     bool hasLineConnection; // added flag to keep track of line connection
 };
 
-obj::~obj()
+Object::~Object()
 {
 
 }
 
-obj::obj()
+Object::Object()
 {
 
 }
@@ -72,7 +72,7 @@ int factorial(int n) {
 }
 
 // Function to display the array
-void display(int a[], int n, obj circle[], sf::RenderWindow& window, sf::Text& percentage, sf::Text& counter_text, float counter)
+void display(int a[], int n, Object circle[], sf::RenderWindow& window, sf::Text& percentage, sf::Text& counter_text, float counter)
 {
     double distnace_between = 0;
     window.clear(sf::Color::Black);
@@ -86,19 +86,17 @@ void display(int a[], int n, obj circle[], sf::RenderWindow& window, sf::Text& p
             //calculate distance between using pitagoras
             distnace_between = distnace_between + sqrt(pow(circle[i].get_pos().x - circle[a[i]].get_pos().x, 2) + pow(circle[i].get_pos().y - circle[a[i]].get_pos().y, 2));
 
-            line[0].color = sf::Color::White;
-            line[1].color = sf::Color::Blue;
+            line[0].color = sf::Color::Cyan;
+            line[1].color = sf::Color::Magenta;
 
             // Check if circle is connected to a line
 
-            //cout << a[i] << i << endl;
-
             if (a[i] != i) {
-                circle[i].render(window, false);
+                circle[i].render(window, true);
                 circle[i].setLineConnection(false);
             }
             else {
-                circle[i].render(window, true);
+                circle[i].render(window, false);
                 circle[i].setLineConnection(false);
             }
 
@@ -123,9 +121,9 @@ void display(int a[], int n, obj circle[], sf::RenderWindow& window, sf::Text& p
 }
 
 // Function to find the permutations
-void findPermutations(int a[], int n, obj circle[], sf::RenderWindow& window, sf::Text& percentage, sf::Text& counter_text)
+void findPermutations(int a[], int n, Object circle[], sf::RenderWindow& window, sf::Text& percentage, sf::Text& counter_text)
 {
-    int counter = 0;
+    int counter = 1;
     // Sort the given array
     sort(a, a + n);
 
@@ -135,7 +133,7 @@ void findPermutations(int a[], int n, obj circle[], sf::RenderWindow& window, sf
         display(a, n, circle, window, percentage, counter_text, counter);
 
         // Pause for a short duration
-        this_thread::sleep_for(chrono::milliseconds(20));
+        //this_thread::sleep_for(chrono::milliseconds(20));
 
     } while (next_permutation(a, a + n));
 }
@@ -170,17 +168,21 @@ int main()
     
     int counter = 0;
 
-    obj circle[6];
-    circle[0].set_pos(100, 100);
-    circle[1].set_pos(1000, 50);
-    circle[2].set_pos(500, 900);
-    circle[3].set_pos(800, 500);
-    circle[4].set_pos(200, 600);
+    Object circle[6];
+
+    circle[0].set_pos(500, 100);
+    circle[1].set_pos(800, 50);
+    circle[2].set_pos(200, 700);
+    circle[3].set_pos(150, 300);
+    circle[4].set_pos(900, 900);
     circle[5].set_pos(400, 500);
+
+    int a[] = { 0, 1, 2, 3, 4, 5}; // Indices of circles
+    int n = sizeof(a) / sizeof(a[0]);
 
     sf::Event event;
 
-    while (window.isOpen()) {
+    while (window.isOpen()){
 
         while (window.pollEvent(event)) {
 
@@ -195,12 +197,8 @@ int main()
                 break;
             }
         }
-        
-        int a[6] = { 0, 1, 2, 3, 4, 5}; // Indices of circles
-        int n = sizeof(a) / sizeof(a[0]);
-        
         counter++;
-        
+       
         window.clear();
         findPermutations(a, n, circle, window, percentage, counter_text);
         window.display();
