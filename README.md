@@ -6,11 +6,11 @@
 
 ### Change the position and the amount of circles
   Set the number of the objects by changing index value (```n``` is default):
-```
+```c++
 Object circle[n];
 ```
 Set position of the objects based on index value (to ```n-1```):
-```
+```c++
 circle[0].set_pos(500, 100);
 circle[1].set_pos(800, 50);
 circle[2].set_pos(200, 700); 
@@ -20,11 +20,11 @@ circle[2].set_pos(200, 700);
 circle[n-1].set_pos(400, 300); 
  ```
 Change the value of an array that holds the maximum value of the permutation:
- ```
+ ```c++
 int a[] = { 0, 1, 2, ... , n-1};
  ```
 ### Example of changed code
- ```
+ ```c++
 Object circle[4];
 
 circle[0].set_pos(500, 100);
@@ -36,7 +36,7 @@ int a[] = { 0, 1, 2, 3};
  ```
  ### Change colors:
  in class ```Object```
-  ```
+  ```c++
   class Object
 {
 public:
@@ -56,7 +56,7 @@ public:
 Note: algorithm visualization is based on SFML c++ library
 ## Task list
 - [ ] upgrade graphics<br>
-- [ ] split into files and organize code<br>
+- [x] split into files and organize code<br>
 - [x]	function that finds range between objects<br>
 - [x] function that return progress in percentage<br>
 
