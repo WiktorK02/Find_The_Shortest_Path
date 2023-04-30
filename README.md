@@ -1,7 +1,7 @@
 # Algorithm which visualize permutations simulation
 ## Screenshots
-<pre><img src="https://user-images.githubusercontent.com/123249470/231189581-51d0d722-ac05-4046-ba7f-db6fef748286.gif" width="400" height="400" />   <img src="https://user-images.githubusercontent.com/123249470/231208904-8a680d4d-275e-4217-9d9d-5b35cd1ee8fa.gif" width="400" height="400"/></pre>
-
+![15](https://user-images.githubusercontent.com/123249470/231189581-51d0d722-ac05-4046-ba7f-db6fef748286.gif)
+![15](https://user-images.githubusercontent.com/123249470/231208904-8a680d4d-275e-4217-9d9d-5b35cd1ee8fa.gif)
 ## Customize it by yourself
 
 ### Change the position and the amount of circles
