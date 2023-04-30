@@ -1,5 +1,5 @@
 # Algorithm which visualize permutations simulation
-## Screenshots
+## Demo
 ![15](https://user-images.githubusercontent.com/123249470/231189581-51d0d722-ac05-4046-ba7f-db6fef748286.gif)
 ![15](https://user-images.githubusercontent.com/123249470/231208904-8a680d4d-275e-4217-9d9d-5b35cd1ee8fa.gif)
 ## Customize it by yourself
@@ -54,11 +54,24 @@ public:
       }
  ```
 Note: algorithm visualization is based on SFML c++ library
+## How to Contribute
+1. Fork the Project
+2. Clone repo with your GitHub username instead of ```YOUR-USERNAME```:<br>
+```
+$ git clone https://github.com/YOUR-USERNAME/Permutation_Simulation
+```
+3. Create new branch:<br>
+```
+$ git branch BRANCH-NAME 
+$ git checkout BRANCH-NAME
+```
+4. Make changes and test<br>
+5. Submit Pull Request with comprehensive description of change
 ## Task list
-- [ ] upgrade graphics<br>
-- [x] split into files and organize code<br>
-- [x]	function that finds range between objects<br>
-- [x] function that return progress in percentage<br>
+* <del> upgrade graphics<br> </del>
+* <del> split into files and organize code<br></del>
+* <del> function that finds range between objects<br></del>
+* <del> function that return progress in percentage<br></del>
 
 ## What I have learned
 •	improved SFML library skills<br>
